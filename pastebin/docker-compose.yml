@@ -1,0 +1,13 @@
+version: '3'
+services:
+  glot:
+    restart: always
+    image: glot/docker-run:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8088:8088
+    environment:
+      API_ACCESS_TOKEN: token
+      DOCKER_CONTAINER_ULIMIT_NPROC_SOFT: 2000
+      DOCKER_CONTAINER_ULIMIT_NPROC_HARD: 5000
