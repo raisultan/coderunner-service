@@ -1,0 +1,28 @@
+name: Publish to Docker Hub
+on:
+  release:
+    types: [published]
+jobs:
+  build-load-push-images:
+    name: Build, Load images and Push them to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - run: |
+          echo "Getting privileges for build_all.sh script"
+          chmod +x ./images/scripts/build_all.sh
+          ./images/scripts/build_all.sh
+
+          echo "Login to Docker"
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+          echo "Load images"
+          docker load ./images/built/python
+          docker load ./images/built/js
+
+          echo "Push to Docker Hub"
+          docker push raisultan/python:latest
+          docker push raisultan/js:latest
+
+          echo "Done!"
