@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
       - run: |
           echo "Install KVM"
-          sudo apt-get install qemu-kvm libvirt-bin ubuntu-vm-builder bridge-utils
+          $ sudo apt install -y qemu qemu-kvm libvirt-daemon libvirt-clients bridge-utils virt-manager
 
           echo "Get privileges for build_all.sh script"
           cd ./images
