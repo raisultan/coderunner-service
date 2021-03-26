@@ -1,5 +1,5 @@
 #!/bin/bash
 
-mkdir -p built_images
-nix-build --out-link result/js js/build.nix
-nix-build --out-link result/python python/build.nix
+mkdir -p built
+nix-build --out-link built/js js/build.nix
+nix-build --out-link built/python python/build.nix
