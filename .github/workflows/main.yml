@@ -31,8 +31,8 @@ jobs:
           ./scripts/build_all.sh
 
           echo "Load images"
-          docker load ./built/python
-          docker load ./built/js
+          docker load < ./built/python
+          docker load < ./built/js
 
           echo "Push to Docker Hub"
           docker push raisultan/python:latest
