@@ -20,6 +20,8 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
       - name: Check out the repo
         uses: actions/checkout@v2
+      - name: Packer build
+        uses: enr0s/packer-qemu-action@v1.0
       - run: |
           echo "Install KVM"
           sudo apt-get install qemu-kvm
