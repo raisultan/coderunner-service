@@ -13,6 +13,7 @@ let
       ps.python-dateutil
       ps.pytz
       ps.six
+      ps.requests
     ]);
 in
 build_image {
