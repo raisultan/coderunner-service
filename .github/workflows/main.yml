@@ -21,7 +21,7 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
       - name: Packer build
-        uses: enr0s/packer-qemu-action@v1.0
+        uses: enr0s/packer-qemu-action@v0.2
       - run: |
           echo "Install KVM"
           sudo apt-get install qemu-kvm
