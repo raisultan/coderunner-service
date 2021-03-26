@@ -16,13 +16,18 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v2
       - run: |
+          echo "Install KVM"
+          sudo apt-get install qemu-kvm libvirt-bin ubuntu-vm-builder bridge-utils
+
           echo "Get privileges for build_all.sh script"
           cd ./images
           chmod +x ./scripts/build_all.sh
-          ./scripts/build_all.sh
 
           echo "Login to Docker"
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+          echo "Build all images"
+          ./scripts/build_all.sh
 
           echo "Load images"
           docker load ./built/python
