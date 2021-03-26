@@ -7,7 +7,7 @@ let
 in
 build_image {
   pkgs = pkgs;
-  name = "raisultan/javascript";
+  name = "raisultan/js";
   tag = "latest";
   installedPackages = [
     pkgs.nodejs

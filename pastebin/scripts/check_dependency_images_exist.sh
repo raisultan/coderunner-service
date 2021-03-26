@@ -1,21 +1,21 @@
 #!/bin/bash
 
-# check javascript image existence, pull if needed
-if [[ "$(docker images -q glot/javascript:latest 2> /dev/null)" == "" ]];
+# check js image existence, pull if needed
+if [[ "$(docker images -q raisultan/js:latest 2> /dev/null)" == "" ]];
 then
-  echo "glot/javascript:latest image not found"
-  echo "Pulling image glot/javascript:latest"
-  docker pull glot/javascript:latest
+  echo "raisultan/js:latest image not found"
+  echo "Pulling image raisultan/js:latest"
+  docker pull raisultan/js:latest
 else
-  echo "glot/javascript:latest image exists skipping pull"
+  echo "raisultan/js:latest image exists skipping pull"
 fi
 
 # check python image existence, pull if needed
-if [[ "$(docker images -q glot/python:latest 2> /dev/null)" == "" ]];
+if [[ "$(docker images -q raisultan/python:latest 2> /dev/null)" == "" ]];
 then
-  echo "glot/python:latest image not found"
-  echo "Pulling image glot/python:latest"
-  docker pull glot/javascript:latest
+  echo "raisultan/python:latest image not found"
+  echo "Pulling image raisultan/python:latest"
+  docker pull raisultan/python:latest
 else
-  echo "glot/python:latest image exists skipping pull"
+  echo "raisultan/python:latest image exists skipping pull"
 fi
