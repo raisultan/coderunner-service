@@ -7,27 +7,26 @@ jobs:
     name: Build, Load images and Push them to Docker Hub
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
       - name: Setup Docker
         uses: docker-practice/actions-setup-docker@master
       - name: Install Nix
         uses: cachix/install-nix-action@v12
         with:
           nix_path: nixpkgs=channel:nixos-unstable
+      - name: Check out the repo
+        uses: actions/checkout@v2
       - run: |
-          echo "Install deps"
-
           echo "Get privileges for build_all.sh script"
-          chmod +x ./images/scripts/build_all.sh
-          ./images/scripts/build_all.sh
+          cd ./images
+          chmod +x ./scripts/build_all.sh
+          ./scripts/build_all.sh
 
           echo "Login to Docker"
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 
           echo "Load images"
-          docker load ./images/built/python
-          docker load ./images/built/js
+          docker load ./built/python
+          docker load ./built/js
 
           echo "Push to Docker Hub"
           docker push raisultan/python:latest
