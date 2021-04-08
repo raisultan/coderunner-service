@@ -1,5 +1,14 @@
 version: '3'
 services:
+  loadbalancer:
+    command: sh -c "uvicorn app.main:app --reload --host 0.0.0.0"
+    build:
+        context: ./loadbalancer
+        dockerfile: Dockerfile
+    ports:
+      - 8001:8000
+    volumes:
+      - ./loadbalancer:/loadbalancer
   glot:
     restart: always
     image: glot/docker-run:latest
