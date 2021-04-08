@@ -17,6 +17,9 @@ class Settings(BaseSettings):
     CELERY_RESULT_SERIALIZER: str = 'json'
     CELERY_TASK_SERIALIZER: str = 'json'
 
+    CODERUNNER_ROOT_URL: str = 'http://glot:8088'
+    CODERUNNER_API_KEY: str = 'token'
+
     class Config:
         case_sensitive = True
 
