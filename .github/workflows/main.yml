@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v2
       - run: |
           echo "Get privileges for build_all.sh script"
-          cd ./images
+          cd ./coderunner/images
           chmod +x ./scripts/build_all.sh
 
           echo "Build all images"
