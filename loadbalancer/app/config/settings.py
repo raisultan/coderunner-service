@@ -1,4 +1,6 @@
+import os
 import secrets
+from typing import Optional
 
 from pydantic import BaseSettings
 
@@ -9,6 +11,11 @@ class Settings(BaseSettings):
     X_API_TOKEN: str = 'no-secret-yet'
 
     PROJECT_NAME: str = 'loadbalancer'
+
+    CELERY_BROKER_URL: Optional[str] = os.environ.get('BROKER_URL')
+    CELERY_ACCEPT_CONTENT: list[str] = ['application/json']
+    CELERY_RESULT_SERIALIZER: str = 'json'
+    CELERY_TASK_SERIALIZER: str = 'json'
 
     class Config:
         case_sensitive = True
