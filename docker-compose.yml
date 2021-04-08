@@ -10,7 +10,7 @@ services:
     volumes:
       - ./loadbalancer:/loadbalancer
   celery:
-    command: sh -c "celery -A app.config.celery_app worker -l info -B"
+    command: sh -c "celery -A app.config.celery_app worker -l info"
     build:
         context: ./loadbalancer
         dockerfile: Dockerfile
