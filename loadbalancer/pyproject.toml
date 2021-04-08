@@ -11,6 +11,7 @@ fastapi = "0.62.0"
 httpx = "0.17.1"
 asyncio = "3.4.3"
 celery = "5.0.5"
+redis = "3.5.3"
 
 [tool.poetry.dev-dependencies]
 
