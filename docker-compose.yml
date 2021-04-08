@@ -9,6 +9,19 @@ services:
       - 8001:8000
     volumes:
       - ./loadbalancer:/loadbalancer
+  celery:
+    command: sh -c "celery -A app.config.celery_app worker -l info -B"
+    build:
+        context: ./loadbalancer
+        dockerfile: Dockerfile
+    volumes:
+      - ./loadbalancer:/loadbalancer
+    environment:
+      BROKER_URL: 'redis://redis:6379'
+    depends_on:
+      - redis
+  redis:
+    image: redis:6.2.1-alpine
   glot:
     restart: always
     image: glot/docker-run:latest
