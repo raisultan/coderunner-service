@@ -1,8 +1,15 @@
-from app.config import celery_app
+import httpx
+
 from app.api_driver import CodeRunnerAPIDriver
+from app.config import celery_app
 
 
-@celery_app.task(name='coderunner_run')
-def coderunner_run(data: dict) -> None:
-    resp = CodeRunnerAPIDriver.run(data)
-    return resp
+@celery_app.task(name='coderunner_run', bind=True, max_retries=5)
+def coderunner_run(self, data: dict) -> None:
+    try:
+        resp = CodeRunnerAPIDriver.run(data)
+    except httpx.ReadTimeout:
+        # TODO: logging
+        self.retry(countdown=2**self.request.retries)
+    else:
+        return resp
