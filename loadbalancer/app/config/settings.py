@@ -12,13 +12,15 @@ class Settings(BaseSettings):
 
     PROJECT_NAME: str = 'loadbalancer'
 
-    CELERY_BROKER_URL: Optional[str] = os.environ.get('BROKER_URL')
-    CELERY_ACCEPT_CONTENT: list[str] = ['application/json']
-    CELERY_RESULT_SERIALIZER: str = 'json'
-    CELERY_TASK_SERIALIZER: str = 'json'
-
     CODERUNNER_ROOT_URL: str = 'http://glot:8088'
     CODERUNNER_API_KEY: str = 'token'
+
+    class Celery:
+        broker_url: Optional[str] = os.environ.get('BROKER_URL')
+        accept_content: list[str] = ['application/json']
+        result_serializer: str = 'json'
+        task_serializer: str = 'json'
+        ignore_result: bool = True
 
     class Config:
         case_sensitive = True
