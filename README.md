@@ -23,4 +23,4 @@ Features:
 - [ ] logging setup
 - [ ] elk integration
 - [x] flower - celery monitoring
-- [ ] keyerror on '__signature__' when accessing worker info in flower
+- [x] keyerror on '__signature__' when accessing worker info in flower
