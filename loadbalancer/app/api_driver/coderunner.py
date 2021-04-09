@@ -16,18 +16,17 @@ class CodeRunnerAPIDriver:
         RUN: str = '/run'
 
     @classmethod
-    async def _build_url(cls, route: str) -> str:
+    def _build_url(cls, route: str) -> str:
         return f'{cls._api_root_url}{route}'
 
     @classmethod
-    async def run(cls, data: schemas.CodeRun) -> httpx.Response:
-        url = await cls._build_url(cls.Route.RUN)
+    def run(cls, data: schemas.CodeRun) -> httpx.Response:
+        url = cls._build_url(cls.Route.RUN)
 
-        async with httpx.AsyncClient() as client:
-            resp = await client.post(
-                url,
-                headers={'X-Access-Token': cls.api_key},
-                data=data.json(),
-            )
+        resp = httpx.post(
+            url,
+            headers={'X-Access-Token': cls.api_key},
+            json=data,
+        )
 
         return resp
