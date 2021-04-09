@@ -15,6 +15,8 @@ class CodeRunnerAPIDriver:
     class Route:
         RUN: str = '/run'
 
+    READ_TIMEOUT: float = 15.0
+
     @classmethod
     def _build_url(cls, route: str) -> str:
         return f'{cls._api_root_url}{route}'
@@ -27,6 +29,7 @@ class CodeRunnerAPIDriver:
             url,
             headers={'X-Access-Token': cls.api_key},
             json=data,
+            timeout=httpx.Timeout(timeout=cls.READ_TIMEOUT)
         )
 
         return resp
