@@ -1,29 +1,34 @@
-version: '3'
+version: '3.8'
+
+x-service-basic: &service-basic
+  volumes:
+    - ./loadbalancer:/loadbalancer
+  environment:
+    BROKER_URL: 'redis://redis:6379'
+
 services:
   loadbalancer:
-    command: sh -c "uvicorn app.main:app --reload --host 0.0.0.0"
+    command: sh -c 'uvicorn app.main:app --reload --host 0.0.0.0'
     build:
         context: ./loadbalancer
         dockerfile: Dockerfile
     ports:
       - 8001:8000
-    volumes:
-      - ./loadbalancer:/loadbalancer
+    <<: *service-basic
+
   celery:
-    command: sh -c "celery -A app.config.celery_app worker -l info"
+    command: sh -c 'celery -A app.config.celery_app worker --loglevel=INFO -c 4'
     build:
-        context: ./loadbalancer
-        dockerfile: Dockerfile
-    volumes:
-      - ./loadbalancer:/loadbalancer
-    environment:
-      BROKER_URL: 'redis://redis:6379'
+      context: ./loadbalancer
+      dockerfile: Dockerfile
     depends_on:
       - redis
+    <<: *service-basic
+
   redis:
     image: redis:6.2.1-alpine
+
   glot:
-    restart: always
     image: glot/docker-run:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -33,3 +38,15 @@ services:
       API_ACCESS_TOKEN: token
       DOCKER_CONTAINER_ULIMIT_NPROC_SOFT: 2000
       DOCKER_CONTAINER_ULIMIT_NPROC_HARD: 5000
+
+  flower:
+    image: mher/flower
+    volumes:
+    - ./loadbalancer:/loadbalancer
+    environment:
+      CELERY_BROKER_URL: 'redis://redis:6379'
+      FLOWER_PORT: 5555
+    ports:
+      - 5555:5555
+    depends_on:
+      - redis
