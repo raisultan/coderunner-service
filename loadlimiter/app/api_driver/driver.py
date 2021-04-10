@@ -11,7 +11,7 @@ from .logger import coderunner_api_driver_logger_init
 
 class CodeRunnerAPIDriver:
     _api_root_url: str = settings.CODERUNNER_ROOT_URL
-    api_key: str = settings.CODERUNNER_API_KEY
+    _api_key: str = settings.CODERUNNER_API_KEY
 
     logger: logging.Logger = coderunner_api_driver_logger_init()
 
@@ -33,7 +33,7 @@ class CodeRunnerAPIDriver:
     @classmethod
     def run(cls, data: schemas.CodeRun) -> dict:
         url = cls._build_url(cls.Route.RUN)
-        headers = {'X-Access-Token': cls.api_key}
+        headers = {'X-Access-Token': cls._api_key}
 
         cls._log_request(url, headers, data)
 
