@@ -6,7 +6,7 @@ import httpx
 from app import schemas
 from app.config import settings
 
-from .logger import coderunner_logger_init
+from .logger import coderunner_api_driver_logger_init
 
 
 class CodeRunnerAPIDriver:
@@ -14,7 +14,7 @@ class CodeRunnerAPIDriver:
 
     api_key: str = settings.CODERUNNER_API_KEY
 
-    logger: logging.Logger = coderunner_logger_init()
+    logger: logging.Logger = coderunner_api_driver_logger_init()
 
     READ_TIMEOUT: float = 15.0
 
