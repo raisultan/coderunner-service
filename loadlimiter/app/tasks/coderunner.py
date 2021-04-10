@@ -9,7 +9,6 @@ def coderunner_run(self, data: dict) -> None:
     try:
         resp = CodeRunnerAPIDriver.run(data)
     except httpx.ReadTimeout:
-        # TODO: logging
         self.retry(countdown=2**self.request.retries)
     else:
         return resp
