@@ -20,7 +20,7 @@ Features:
 - [x] celery setup and integration
 - [x] sample endpoint that sends offload task to queue
 - [x] driver for interaction with another services
-- [ ] logging setup
-- [ ] elk integration
+- [x] celery logging
+- [ ] driver logging
 - [x] flower - celery monitoring
 - [x] keyerror on '__signature__' when accessing worker info in flower
