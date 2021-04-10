@@ -24,8 +24,16 @@ class Settings(BaseSettings):
         task_serializer: str = 'json'
         ignore_result: bool = True
 
-    class CeleryLogging:
+    class CeleryLogger:
         FILENAME: str = 'celery.log'
+        MAX_BYTES: int = 5 * (1024 * 1024)
+        BACKUP_COUNT: int = 10
+        FORMATTER: logging.Formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
+
+    class CoderunnerAPIDriverLogger:
+        FILENAME: str = 'coderunner_api_driver.log'
         MAX_BYTES: int = 5 * (1024 * 1024)
         BACKUP_COUNT: int = 10
         FORMATTER: logging.Formatter = logging.Formatter(
