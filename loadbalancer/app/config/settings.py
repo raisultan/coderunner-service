@@ -1,6 +1,7 @@
 import os
+import logging
 import secrets
-from typing import Optional
+from typing import Final, Optional
 
 from pydantic import BaseSettings
 
@@ -15,12 +16,22 @@ class Settings(BaseSettings):
     CODERUNNER_ROOT_URL: str = 'http://glot:8088'
     CODERUNNER_API_KEY: str = 'token'
 
-    class Celery:
+    LOGS_DIR: str = 'logs/'
+
+    class CeleryConf:
         broker_url: Optional[str] = os.environ.get('BROKER_URL')
         accept_content: list[str] = ['application/json']
         result_serializer: str = 'json'
         task_serializer: str = 'json'
         ignore_result: bool = True
+
+    class CeleryLogging:
+        FILENAME: Final[str] = 'celery.log'
+        MAX_BYTES: int = 5 * (1024 * 1024)
+        BACKUP_COUNT: int = 10
+        FORMATTER: logging.Formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        )
 
     class Config:
         case_sensitive = True
