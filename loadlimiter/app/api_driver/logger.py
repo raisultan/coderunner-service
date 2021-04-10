@@ -7,6 +7,7 @@ from app.config import settings
 
 def coderunner_api_driver_logger_init() -> logging.Logger:
     logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
 
     if not os.path.exists(settings.LOGS_DIR):
         os.makedirs(settings.LOGS_DIR)
