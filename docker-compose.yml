@@ -2,15 +2,15 @@ version: '3.8'
 
 x-service-basic: &service-basic
   volumes:
-    - ./loadbalancer:/loadbalancer
+    - ./loadlimiter:/loadlimiter
   environment:
     BROKER_URL: 'redis://redis:6379'
 
 services:
-  loadbalancer:
+  loadlimiter:
     command: sh -c 'uvicorn app.main:app --reload --host 0.0.0.0'
     build:
-        context: ./loadbalancer
+        context: ./loadlimiter
         dockerfile: Dockerfile
     ports:
       - 8001:8000
@@ -19,7 +19,7 @@ services:
   celery:
     command: sh -c 'celery -A app.config.celery_app worker --loglevel=INFO -c 10'
     build:
-      context: ./loadbalancer
+      context: ./loadlimiter
       dockerfile: Dockerfile
     depends_on:
       - redis
@@ -43,7 +43,7 @@ services:
   flower:
     image: mher/flower
     volumes:
-    - ./loadbalancer:/loadbalancer
+    - ./loadlimiter:/loadlimiter
     environment:
       CELERY_BROKER_URL: 'redis://redis:6379'
       FLOWER_PORT: 5555
