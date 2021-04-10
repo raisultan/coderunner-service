@@ -11,7 +11,6 @@ from .logger import coderunner_api_driver_logger_init
 
 class CodeRunnerAPIDriver:
     _api_root_url: str = settings.CODERUNNER_ROOT_URL
-
     api_key: str = settings.CODERUNNER_API_KEY
 
     logger: logging.Logger = coderunner_api_driver_logger_init()
