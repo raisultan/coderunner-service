@@ -19,9 +19,9 @@ def setup_loggers(logger: logging.Logger, *_, **__) -> None:
         os.makedirs(settings.LOGS_DIR)
 
     rfh = RotatingFileHandler(
-        filename=f'{settings.LOGS_DIR}{settings.CeleryLogging.FILENAME}',
-        maxBytes=settings.CeleryLogging.MAX_BYTES,
-        backupCount=settings.CeleryLogging.BACKUP_COUNT,
+        filename=f'{settings.LOGS_DIR}{settings.CeleryLogger.FILENAME}',
+        maxBytes=settings.CeleryLogger.MAX_BYTES,
+        backupCount=settings.CeleryLogger.BACKUP_COUNT,
     )
-    rfh.setFormatter(settings.CeleryLogging.FORMATTER)
+    rfh.setFormatter(settings.CeleryLogger.FORMATTER)
     logger.addHandler(rfh)
