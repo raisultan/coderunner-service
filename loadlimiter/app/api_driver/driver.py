@@ -1,5 +1,6 @@
 import logging
-from typing import Optional
+from typing import Optional, Union
+from json import JSONDecodeError
 
 import httpx
 
@@ -20,7 +21,8 @@ class CodeRunnerAPIDriver:
     class LoggerMsgTemplates:
         REQUEST: str = 'REQUEST: url: {url} headers: {headers} body: {body}'
         RESPONSE: str = (
-            'RESPONSE: status_code: {status_code} url: {url} headers: {headers} body: {body}'
+            'RESPONSE: status_code: {status_code} url: {url} headers: {headers} '
+            'body: {body} error: {error}'
         )
 
     class Route:
@@ -44,7 +46,14 @@ class CodeRunnerAPIDriver:
             timeout=httpx.Timeout(timeout=cls.READ_TIMEOUT)
         )
 
-        cls._log_response(resp.url, resp.status_code, resp.headers, resp.json())
+        try:
+            resp_body = resp.json()
+            error = None
+        except JSONDecodeError as exc:
+            resp_body = None
+            error = str(exc)
+
+        cls._log_response(resp.url, resp.status_code, resp.headers, resp_body, error)
 
         return resp.json()
 
@@ -64,7 +73,8 @@ class CodeRunnerAPIDriver:
             url: Optional[httpx.URL],
             status_code: int,
             headers: dict[str, str],
-            body: Optional[dict],
+            body: Union[None, dict, str] = None,
+            error: Optional[str] = None,
     ) -> None:
         cls.logger.info(
             msg=cls.LoggerMsgTemplates.RESPONSE.format(
@@ -72,5 +82,6 @@ class CodeRunnerAPIDriver:
                 status_code=status_code,
                 headers=headers,
                 body=body,
+                error=error,
             )
         )
