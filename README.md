@@ -21,6 +21,6 @@ Features:
 - [x] sample endpoint that sends offload task to queue
 - [x] driver for interaction with another services
 - [x] celery logging
-- [ ] driver logging
+- [x] driver logging
 - [x] flower - celery monitoring
 - [x] keyerror on '__signature__' when accessing worker info in flower
