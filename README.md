@@ -24,8 +24,8 @@ Note that the system in which microservice will be used should permit that reque
 - Async API - receives requests from other microservices
 - Load-limiting mechanism
 - API Driver - sends requests to other microservices
+- Coderunner
 - Logging for Celery and API Driver
-- Source code running
 
 
 ## Workflow Scheme
@@ -44,11 +44,27 @@ And start up services:
 docker-compose up
 ```
 
-Finally after successful start of all services, microservice will accept requests on https://0.0.0.0:8001. API docs on http://0.0.0.0:8001/docs. And main endpoint for running custom source code - http://0.0.0.0:8001/api_v1/run. It demands custom headers for basic secure interaction through microservices - `X-Access-Token`. By default it is `token`, you can customize settings in [API settings](https://github.com/raisultan/coderunner-service/blob/main/loadlimiter/app/config/settings.py).
+Finally, after successful start of all services, microservice will accept requests on https://0.0.0.0:8001. API docs on http://0.0.0.0:8001/docs. And main endpoint for running custom source code - http://0.0.0.0:8001/api_v1/run. It demands custom headers for basic secure interaction through microservices - `X-Access-Token`. By default it is `token`, you can customize settings in [API settings](https://github.com/raisultan/coderunner-service/blob/main/loadlimiter/app/config/settings.py).
 
 ### Images
 
-Currently project set up to support JavaScript and Python as basis. But you can add your custom images for other programming languages, those can have custom packages installed. It can be implemented by analogy to [coderunner images](https://github.com/raisultan/coderunner-service/tree/main/coderunner) with Nix, you can find full list of supported and ready to use default docker images [here](https://github.com/glotcode/glot-images). It also has initial [startup script](https://github.com/raisultan/coderunner-service/blob/main/coderunner/scripts/check_dependency_images_exist.sh) that checks existence of needed docker images on machine.
+Currently project set up to support JavaScript and Python as basis. But you can add your custom images for other programming languages, those can have custom packages installed. It can be implemented by analogy to [coderunner images](https://github.com/raisultan/coderunner-service/tree/main/coderunner) with Nix or with instruments of your choice, such as native Dockerfiles + Shell scripts. You can find full list of supported and ready to use default docker images [here](https://github.com/glotcode/glot-images). It also has initial [startup script](https://github.com/raisultan/coderunner-service/blob/main/coderunner/scripts/check_dependency_images_exist.sh) that checks existence of needed docker images on machine and pulls them if needed.
+
+
+### Setting Task Queue and Coderunner Limits
+
+Limits can be adjusted in root [docker-compose file](https://github.com/raisultan/coderunner-service/blob/main/docker-compose.yml).
+
+For Celery, just [edit](https://github.com/raisultan/coderunner-service/blob/main/docker-compose.yml#L20) the number of concurrent processes/threads:
+```yml
+command: sh -c 'celery -A app.config.celery_app worker --loglevel=INFO -c {NUMBER_OF_PROCESSES}'
+```
+
+For glot.io, you can [adjust](https://github.com/raisultan/coderunner-service/blob/main/docker-compose.yml#L41) the `SERVER_WORKER_THREADS` environment variable:
+```yml
+environment:
+    SERVER_WORKER_THREADS: {NUMBER_OF_THREADS}
+```
 
 
 ## Enhancement, contribution, and feedback
